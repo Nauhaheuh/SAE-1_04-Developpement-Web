@@ -1,0 +1,179 @@
+body{
+    background-color:   #F7F4EE;
+    margin: 0;
+}
+
+
+/*--- Barre de navigation ---*/
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DCE8EC;
+    color: #1E2327;
+    padding : 15px 30px;
+}
+.nav_items{
+    margin-right:50px;
+}
+
+.nav_items:last-child{
+    margin-right: 0;
+}
+
+.nav_choices{
+    list-style: none;
+    display: flex;
+    margin: 0;
+}
+
+.nav_choices a {
+    color: #1E2327;
+    text-decoration: none;
+}
+
+.nav_choices a:hover{
+   color: #D9822B;
+    text-decoration: underline;
+}
+
+
+
+/*--- Première div ---*/
+
+.div_main{
+    color: #DCE8EC;
+    background-color: #1F3A4D;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+}
+
+.div_1{
+    background-color: #DCE8EC;
+    color: #1E2327;
+    border-radius: 10px;
+    width: 49%;
+    padding: 20px;
+    margin-right: 20px;
+}
+
+.div_1 h1{
+    margin-top: 0;
+}
+
+.div_2 {
+    background-color: #DCE8EC;
+    margin-left: auto;
+    height: 270px;
+    border-radius: 10px;
+    width: 49%;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#table_relationnelle{
+    max-width: 95%;
+    max-height: 95%;
+}
+
+
+
+
+/*--- Le footer ---*/
+
+.div_footer{
+    background-color: #DCE8EC;
+    min-height: 150px;
+    margin: 10px;
+    border-radius: 10px;
+    display: flex;
+}
+
+.list_footer{
+    list-style: none;
+}
+
+
+.list_footer li{
+    width: 150px;
+    margin-bottom: 4px;
+}
+
+h4{
+    padding-left: 40px;
+}
+
+
+
+
+/*--- Sections Q1 à Q5 ---*/
+
+.requete {
+    background-color: #1F3A4D;
+    color: #DCE8EC;
+    margin: 10px;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.requete_contenu {
+    display: flex;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #DCE8EC;
+}
+
+.requete_contenu:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.requete_texte {
+    width: 50%;
+    padding-right: 20px;
+}
+
+.requete_img {
+    width: 50%;
+    align-self: center;
+}
+
+.requete_img img {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.questions {
+    font-weight: bold;
+}
+
+.sql {
+    background-color: #DCE8EC;
+    color: #1E2327;
+    padding: 15px;
+    border-radius: 10px;
+}
+.retour {
+    color: #DCE8EC;
+    text-decoration: none;
+}
+.retour:hover {
+    text-decoration: underline;
+    color: #D9822B;
+}
+.span_explication{
+    text-decoration: underline;
+}
+
+
+
+
+/*--- Photo-Question ---*/
+img{
+    border-radius: 10px;
+}

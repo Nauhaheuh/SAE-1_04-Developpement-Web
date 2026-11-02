@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Compte rendu SAE 1.04</title>
+        <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" href="ASSETS/CSS/stylesheet_index.css">
+    </head>
+    <body>
+    <header id="haut">
+            <nav class="navbar">
+                <div>Groupe 107</div>
+                <ul class="nav_choices">
+                    <li class="nav_items"><a href="#Index">Accueil</a></li>
+                    <li class="nav_items"><a href="#Q1">Q1</a></li>
+                    <li class="nav_items"><a href="#Q2">Q2</a></li>
+                    <li class="nav_items"><a href="#Q3">Q3</a></li>
+                    <li class="nav_items"><a href="#Q4">Q4</a></li>
+                    <li class="nav_items"><a href="#Q5">Q5</a></li>
+                    <li class="nav_items"><a href="#Propositions">Propositions de requête</a></li>
+                </ul>
+            </nav>
+        </header>
+
+
+
+        <main>
+            <div class="div_main" id="Index">
+
+                <div class="div_1">
+                    <h1>SAÉ S1.04 : Compte rendu</h1>
+                    <p><strong>Interrogation de la base de données de Kdou</strong><br>
+                        Groupe 107</p>
+
+                    <p>KDou est une entreprise qui vend à ses clients français des produits d'épicerie fine achetés auprès de fournisseurs du monde entier. Elle s'interroge sur sa rentabilité et souhaite renforcer son image éco-responsable.</p>
+
+                    <p>Ce compte rendu présente notre étude de sa base de données.</p>
+                </div>
+
+                    <div class="div_2">
+                        <img src="ASSETS/IMG/table_relationnel_kdo.png" alt="table relationnelle" id="table_relationnelle">
+                    </div>
+
+            </div>
+            <section class="requete" id="Q1">
+                <h2>Q1 – Première exploration des données</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">a. On veut vérifier les coordonnées des clients parisiens : liste triée par société.</p>
+                        <p class="sql">
+                            SELECT CodeCli, Societe, Adresse, CodePostal, Tel, MailCli, Ville<br>
+                            FROM Clientele<br>
+                            WHERE Ville = "Paris"<br>
+                            ORDER BY Societe;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête sert à vérifier que les coordonnées des clients parisiens (adresse, code postal, téléphone, mail) sont complètes et exploitables pour organiser les livraisons. On filtre sur la ville « Paris » et on trie par société pour repérer facilement chaque client.</p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br>
+                            On peut signaler que le client « Le Gourmet » est enregistré à Paris avec le code postal 76001, qui ne correspond pas à Paris. Il a également le même mail que « La Parisienne » (contact@parisienne.fr). </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1a.png" alt="Résultat de la requête Q1 a " id="photo_Q1a">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">b. Quels sont les produits de provenance des Etats-Unis avec un cout de moins de 25€ ? On
+                            veut les connaître <em>noms et prix, nom du fournisseur et ville.</em></p>
+                        <p class="sql">
+                            SELECT Produit.Nomprod, Produit.CoutAchat, Fournisseur.Societe, Fournisseur.Ville<br>
+                            FROM (Produit INNER JOIN Fournisseur ON Produit.Nofour = Fournisseur.Nofour)<br>
+                            INNER JOIN Pays ON Fournisseur.NoPays = Pays.NoPays <br>
+                            WHERE Pays.PaysFR = "Etats-Unis" AND Produit.CoutAchat &lt; 25;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête repère les produits américains les moins chers à l'achat, donc ceux dont la marge potentielle est la plus intéressante, avec leur fournisseur et sa ville.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1b.png" alt="Résultat de la requête Q1 b " id="photo_Q1b">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">c. Quels sont les produits (avec fournisseur et pays de provenance) de catégorie viandes ou
+                            poissons ayant un coût d’achat de plus de 50€ ?</p>
+                        <p class="sql">
+                            SELECT Produit.Nomprod, Fournisseur.Societe, Pays.PaysFR<br>
+                            FROM ((Produit INNER JOIN Fournisseur ON Produit.Nofour = Fournisseur.Nofour)<br>
+                            INNER JOIN Pays ON Fournisseur.NoPays = Pays.NoPays) <br>
+                            INNER JOIN Categorie ON Produit.CodeCateg = Categorie.CodeCateg<br>
+                            WHERE Categorie.NomCateg In ("Viandes","Poissons et fruits de mer") And Produit.CoutAchat>50;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête isole les produits des catégories « Viandes » et « Poissons et fruits de mer » dont le coût d'achat dépasse 50 €, avec leur fournisseur et leur pays de provenance. Étant donné la provenance de ces produits et de leur coût d'importation, cette requête permet d'avoir des pistes de renégociation ou de relocalisation. </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1c.png" alt="Résultat de la requête Q1 c " id="photo_Q1c">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">d. Quels fournisseurs proposent de la viande ou du poisson ?</p>
+                        <p class="sql">
+                            SELECT DISTINCT Fournisseur.Societe, Categorie.NomCateg, Fournisseur.Societe, Categorie.NomCateg <br>
+                            FROM Categorie INNER JOIN <br>
+                            (Fournisseur INNER JOIN Produit ON Fournisseur.NoFour = Produit.NoFour)<br>
+                            ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            WHERE(((Categorie.NomCateg) = "Viandes"))<br>
+                            OR (((Categorie.NomCateg) = "Poissons et fruits de mer"));
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête liste les fournisseurs proposant de la viande ou du poisson. Cela pourrait être utile afin de savoir avec quel fournisseur prendre contact pour acheter de nouveau produit dans ces catégories ou chercher des alternatives plus responsables.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1d.png" alt="Résultat de la requête Q1 d " id="photo_Q1d">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">e. Quels fournisseurs proposent de la viande et du poisson ?</p>
+                        <p>Requête enregistrée sous le nom <strong>Req_viandes</strong> :</p>
+                        <p class="sql">
+                            SELECT DISTINCT<br>
+                            Fournisseur.Societe,<br>
+                            Categorie.NomCateg<br>
+                            FROM<br>
+                            Categorie<br>
+                            INNER JOIN (<br>
+                            Fournisseur<br>
+                            INNER JOIN Produit ON Fournisseur.NoFour = Produit.NoFour<br>
+                            ) ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            WHERE<br>
+                            (((Categorie.NomCateg) = "Viandes"));
+                        </p>
+
+                        <p>Requête enregistrée sous le nom <strong>Req_poissons_et_fruits_de_mer</strong> :</p>
+                        <p class="sql">
+                            SELECT DISTINCT<br>
+                            Fournisseur.Societe,<br>
+                            Categorie.NomCateg<br>
+                            FROM<br>
+                            Fournisseur<br>
+                            INNER JOIN (<br>
+                            Categorie<br>
+                            INNER JOIN Produit ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            ) ON Fournisseur.NoFour = Produit.NoFour<br>
+                            WHERE<br>
+                            (((Categorie.NomCateg) = "Poissons et fruits de mer"));
+                        </p>
+
+                        <p>Requête finale :</p>
+                        <p class="sql">
+                            SELECT<br>
+                            Req_viandes.Societe<br>
+                            FROM<br>
+                            Req_viandes<br>
+                            INNER JOIN Req_poissons_et_fruits_de_mer ON Req_viandes.Societe = Req_poissons_et_fruits_de_mer.Societe;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête liste les fournisseurs vendant de la viande et le poisson en même temps. Cela permet de repérer les fournisseurs polyvalents, utiles pour regrouper les commandes et limiter les transports.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1e.png" alt="Résultat de la requête Q1 e " id="photo_Q1e">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">f. Quels sont les produits conditionnés dans du carton ou dans du verre ?</p>
+                        <p class="sql">
+                            SELECT *<br>
+                            FROM Produit<br>
+                            WHERE QteParUnit LIKE '*carton*'<br>
+                            OR QteParUnit LIKE '*verre*';
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête cherche les mots « carton » et « verre » pour retrouver les produits concernés : 23 en carton et 3 en verre (aucun n'est dans les deux). Etant donné l'image que Kdou souhaitant renforcer son image éco-friendly, ce premier repérage permet de ressortir les éléments avec un emballage recyclable.</p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br>
+                            On peut signaler que « Mascarpone Fabioli » est noté « 24 cartons (20200 g) », ce qui est probablement une faute de saisie (200 g).</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1f.png" alt="Résultat de la requête Q1 f " id="Q1f">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">g. Donner les 3 dernières commandes du client Max Deschamps ?</p>
+                        <p class="sql">
+                            SELECT TOP 3 *<br>
+                            FROM Commande INNER JOIN Clientele<br>
+                            ON Commande.CodeCli = Clientele.CodeCli<br>
+                            WHERE Clientele.Contact = 'Max Deschamps'<br>
+                            ORDER BY commande.DateCde DESC;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête permet de suivre l'activité récente d'un client précis, potentiellement avant de le contacter ou de préparer une livraison, ici Max Deschamps (la société « L'Ancienne Auberge »).</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1g.png" alt="Résultat de la requête Q1 g " id="photo_Q1g">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">h. Quels fournisseurs ne proposent que des desserts ?</p>
+                        <p class="sql">
+                            SELECT Fournisseur.Societe, Fournisseur.Contact, Fournisseur.Fonction, Fournisseur.Tel<br>
+                            FROM Categorie INNER JOIN (Fournisseur INNER JOIN Produit ON Fournisseur.NoFour = Produit.NoFour)<br>
+                            ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            GROUP BY Fournisseur.Societe, Fournisseur.Contact, Fournisseur.Fonction, Fournisseur.Tel<br>
+                            HAVING (((Min(Categorie.NomCateg))="Desserts") AND ((Max(Categorie.NomCateg))="Desserts"));
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br> Cette requête repère les fournisseurs spécialisés dans les desserts (4 sur 37), en l'occurrence KDou dépend entièrement d’une seule catégorie : si le dessert se vend moins, le risque est direct. C'est aussi utile pour négocier avec eux ou pour savoir où élargir l’offre.</p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br> On peut signaler que 3 fournisseurs (Sabor do Sul Ltda., Pacific United Traders Ltd. et Ronde du lac) n’ont aucun produit au catalogue, donc ils n’apparaissent pas dans le résultat alors qu’ils existent dans la table. On peut aussi signaler que le produit « LimoCoca » existe en double avec deux fiches différentes, ce qui pourrait fausser la catégorie d’un fournisseur si l’une des deux fiches était mal classée. </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1h.png" alt="Résultat de la requête Q1 h " id="photo_Q1h">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">i. Quels fournisseurs hors France n’ont pas encore de produits au catalogue de Kdou ?</p>
+                        <p class="sql">
+                            SELECT [Fournisseur].[Societe], [Fournisseur].[Contact], [Fournisseur].[Tel], [Pays].[PaysFR]<br>
+                            FROM (([Fournisseur] LEFT JOIN [Produit]<br>
+                            ON [Fournisseur].[NoFour] = [Produit].[NoFour]) INNER JOIN [Pays] <br>
+                            ON [Fournisseur].[NoPays] = [Pays].[NoPays])<br>
+                            WHERE [Fournisseur].[NoPays] NOT IN (SELECT [Fournisseur].[NoPays] <br>
+                            FROM [Fournisseur] INNER JOIN [Pays] <br>
+                            ON [Fournisseur].[NoPays] = [Pays].[NoPays]<br>
+                            WHERE [Pays].[PaysFR] IN ('France')) AND [Produit].[NoFour] IS NULL;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cette requête repère les fournisseurs étrangers qui existent dans la base et qui n'ont aucun produit dans leur catalogue. Cela permet de connaitre les collaborateurs ne proposant rien, par conséquent on peut soit les relancer, soit les retirer de la base de données. </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1i.png" alt="Résultat de la requête Q1 i " id="photo_Q1i">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">j. Pour optimiser les livraisons, on veut savoir quels couples de clients sont situés à Paris.</p>
+                        <p class="sql">
+                            SELECT [C1].[Societe] AS [Societe_1], [C1].[CodeCli], [C2].[Societe] AS [Societe_2], [C2].[CodeCli]<br>
+                            FROM [Clientele] AS [C1], [Clientele] AS [C2]<br>
+                            WHERE [C1].[Ville] = "Paris"<br>
+                            AND [C2].[Ville] = "Paris"<br>
+                            AND [C2].[CodeCli] > [C1].[CodeCli]<br>
+                            ORDER BY [Societe_1], [Societe_2];
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                          Cette requête forme tous les couples de clients situés à Paris. Cela permet dans une démarche plus écologique de pouvoir livrer en même temps deux clients en un seul transport de marchandise.</p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br>
+                            On peut signaler que le client « Le Gourmet » est enregistré à Paris avec le code postal 76001 : s'il n'est pas vraiment parisien, il n'y aurait que 6 couples au lieu de 10.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q1j.png" alt="Résultat de la requête Q1 j " id="photo_Q1j"><!--je n'ai pas la photo je la change juste après-->
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="requete" id="Q2">
+                <h2>Q2 - Dans une réflexion en lien avec l’origine de ses produits :</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">On veut comme indicateur le CA total généré à ce jour avec les fournisseurs de l’UE ?</p>
+                        <p class="sql">
+                            SELECT Sum([Quantité]*[CoutAchat]*[CoefMarge]*(1-[Remise (%)])) AS CA<br>
+                            FROM Pays INNER JOIN (Fournisseur INNER JOIN (Categorie INNER JOIN <br>
+                            (Produit INNER JOIN DetailCommande <br>
+                            ON Produit.RefProd = DetailCommande.[Réf produit]) ON Categorie.CodeCateg = Produit.CodeCateg) <br>
+                            ON Fournisseur.NoFour = Produit.NoFour) ON Pays.NoPays = Fournisseur.NoPays<br>
+                            WHERE (((Pays.UE)="Membre"));
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span><br> Cet indicateur mesure la part de l’activité qui vient de l’Union européenne. Plus elle est élevée, plus les produits voyagent sur de courtes distances (donc moins de transport et d’émissions). C’est un bon point de départ pour l’image éco-responsable. Il faudrait comparer ce chiffre au CA total pour avoir un pourcentage. </p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br>On peut signaler que 7 lignes de commande semblent saisies en double (le même produit deux fois dans la même commande, avec la même quantité, par exemple la commande 11110 pour le produit 40), ce qui peut surestimer légèrement le CA. Ainsi que les données qui ne contiennent que trois années dont une seule complète, donc le total à ce jour couvre en réalité de fin juillet 2020 à novembre 2022.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q2.png" alt="Résultat de la requête Q2 " id="photo_Q2">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="requete" id="Q3">
+                <h2>Q3 - Dans une réflexion en lien avec la santé :</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions">On veut comme indicateur le chiffre d’affaire généré (montant total des ventes) annuel pour les catégories desserts ou boissons.</p>
+                        <p class="sql">
+                            SELECT Categorie.NomCateg, Year([DateCde]) AS Année, Sum([Quantité]*[CoutAchat]*[CoefMarge]*(1-[Remise (%)])) AS CA<br>
+                            FROM Categorie INNER JOIN (Produit INNER JOIN <br>
+                            (Commande INNER JOIN DetailCommande ON Commande.[N° commande] = DetailCommande.[N° commande])<br>
+                            ON Produit.RefProd = DetailCommande.[Réf produit]) ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            GROUP BY Categorie.NomCateg, Year([DateCde])<br>
+                            HAVING (((Categorie.NomCateg)="Desserts")) OR (((Categorie.NomCateg)="Boissons"))<br>
+                            ORDER BY Year([DateCde]);
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span><br>Cette requête montre le poids de deux catégories liées à la santé (sucre) et son évolution dans le temps. Les boissons représentent environ le double des desserts, KDou peut alors s’en servir pour décider quoi promouvoir ou quoi remplacer par une offre plus saine.</p>
+                        <p class="explication"><span class="span_explication">Erreurs :</span> <br>On peut signaler que les années ne sont pas comparables : 2020 commence seulement fin juillet, 2022 n’a que 5 commandes, et seule 2021 est complète. De plus, 16 commandes ont une date d’envoi antérieure à leur date de commande (par exemple commandée le 22/12/2021 mais envoyée le 13/01/2021), probablement une erreur d’année qui n'a pas d’effet sur le calcul pour autant, car on s’appuie sur la date de commande, mais ça montre que les dates ne sont pas fiables. On peut signaler aussi, les 7 lignes en double peuvent aussi gonfler un peu le CA.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q3.png" alt="Résultat de la requête Q3 " id="photo_Q3">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="requete" id="Q4">
+                <h2>Q4 - Dans une réflexion en lien avec l’offre commerciale :</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> Calcul de l’indicateur nombre de produits carnés non commandés actuellement ?</p>
+                        <p class="sql">
+                            SELECT COUNT([Produit].[NomProd]) AS [Nombres de produit]<br>
+                            FROM [DetailCommande]<br>
+                            RIGHT JOIN ([Categorie]<br>
+                            INNER JOIN [Produit]<br>
+                            ON [Categorie].[CodeCateg] = [Produit].[CodeCateg])<br>
+                            ON [DetailCommande].[Réf produit] = [Produit].[RefProd]<br>
+                            WHERE ([DetailCommande].[N° commande] IS NULL) AND ([Categorie].[CodeCateg] = 6)<br>
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Cet indicateur compte les produits de viande qui n'ont jamais été commandés. Cela permet de savoir quels produits ne trouvent pas de public, c'est donc un indicateur pour l'entreprise. Elle pourra alors potentiellement décider de les retirer du catalogue, de les promouvoir, ou de revoir leur prix.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q4.png" alt="Résultat de la requête Q4 " id="photo_Q4">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="requete" id="Q5">
+                <h2>Q5 - Dans une réflexion sur le partenariat client :</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> A-t-on des clients pilotes d’un réseau partenaire ayant autant de commandes que les clients partenaires ?</p>
+                        <p class="sql">
+                            SELECT CodeCli, COUNT([N° commande]) AS NbCmd<br>
+                            FROM Commande<br>
+                            GROUP BY CodeCLi;
+                        </p>
+                        <p class="sql">
+                            SELECT A.CodeCli, CA.NbCmd, B.CodeCli, CB.NbCmd<br>
+                            FROM ((Clientele AS A INNER JOIN Clientele AS B ON A.CodeCliPart = B.CodeCLi)<br>
+                            INNER JOIN 5_NbCommandes AS CA ON CA.CodeCli = A.CodeCLi) <br>
+                            INNER JOIN 5_NbCommandes AS CB ON CB.CodeCli = B.CodeCli<br>
+                            WHERE CA.NbCmd = CB.NbCmd;<br>
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            Certains clients pilotent un réseau de clients partenaires pour des livraisons groupées. On compare ici le nombre de commandes d'un client partenaire à celui de son pilote. Cela permet à l'entreprise d'évaluer l'équilibre du réseau, de repérer les liens à retravailler et de savoir sur qui s'appuyer.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/Q5_1.png" alt="Résultat de la requête Q5 partie 1 " id="photo_Q5_1">
+                        <img src="ASSETS/IMG/Q5_2.png" alt="Résultat de la requête Q5 partie 2 " id="photo_Q5_2">
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="requete" id="Propositions">
+                <h2>Propositions de requêtes :</h2>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> 1. Quel est le CA des fournisseurs de l’UE une fois supprimées les lignes de commande en double, et quel écart avec le CA brut ?</p>
+                        <p class="sql">
+                            SELECT SUM(D.Quantité * P.CoutAchat * C.CoefMarge * (1 - D.[Remise (%)])) AS CA_UE_corrige<br>
+                            FROM (SELECT DISTINCT [N° commande], [Réf produit], Quantité, [Remise (%)]<br>
+                            FROM DetailCommande) AS D,<br>
+                            Produit AS P, Categorie AS C, Fournisseur AS F, Pays AS Y<br>
+                            WHERE D.[Réf produit] = P.RefProd<br>
+                            AND P.CodeCateg = C.CodeCateg<br>
+                            AND P.NoFour = F.NoFour<br>
+                            AND F.NoPays = Y.NoPays<br>
+                            AND Y.UE = 'Membre';
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>Dans la Q2, il y a 7 lignes de commande en double (même commande, même produit, même quantité, même remise). Les retirer fait passer le CA UE de 2 754 530 € à 2 752 344 €, soit environ 2 186 € de moins. Cette requête fait donc office d'une vérification de fiabilité, pas une correction massive. Sur la requête 3, seules 3 lignes de desserts et de boissons sont concernées (commandes 11112, 11115 et 11110), donc l’effet est minuscule aussi. Même si on ne peut pas être sûr que ce soit des erreurs car un client a peut-être vraiment commandé deux fois le même produit.  </p>
+                        <p class="explication"><span class="span_explication">Intérêt :</span> <br>Un indicateur doit être fiable avant de guider une décision. Cette requête vérifie que les lignes saisies deux fois ne faussent pas le CA UE, et mesure l’écart. Elle améliore la qualité de l’indicateur d’origine de KDou.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/P1.png" alt="Résultat de la requête P1" id="photo_P1">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> 2. Quels sont les dix produits les plus vendus (en quantité) dont le fournisseur est situé hors de l’Union européenne, avec leur pays d’origine et leur prix de vente unitaire ?</p>
+                        <p class="sql">
+                            SELECT TOP 10<br>
+                            Produit.NomProd,<br>
+                            Pays.PaysFR,<br>
+                            Produit.CoutAchat * Categorie.CoefMarge AS PrixVente,<br>
+                            SUM(DC.Quantité) AS QteVendue<br>
+                            FROM (((DetailCommande AS DC<br>
+                            INNER JOIN Produit ON DC.[Réf produit] = Produit.RefProd)<br>
+                            INNER JOIN Fournisseur ON Produit.NoFour = Fournisseur.NoFour)<br>
+                            INNER JOIN Pays ON Fournisseur.NoPays = Pays.NoPays)<br>
+                            INNER JOIN Categorie ON Produit.CodeCateg = Categorie.CodeCateg<br>
+                            WHERE Pays.UE = "Hors"<br>
+                            GROUP BY Produit.NomProd, Pays.PaysFR, Produit.CoutAchat, Categorie.CoefMarge<br>
+                            ORDER BY SUM(DC.Quantité) DESC;
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>Les jointures relient chaque ligne de commande à son produit, à la catégorie (coefficient de marge) et au pays du fournisseur. Le filtre UE = « Hors » ne garde que les fournisseurs extérieurs à l’UE. Je mesure la popularité par la quantité vendue (SUM de Quantité), plus fidèle à la demande que le nombre de lignes de commande, et le prix par le prix de vente unitaire (coût d’achat × coefficient de marge), celui que paie le client. Le GROUP BY porte sur tous les champs non agrégés, puis ORDER BY ... DESC et TOP 10 donnent le classement.</p>
+                        <p class="explication"><span class="span_explication">Intérêt :</span> <br>Plus de la moitié des quantités vendues par KDou proviennent de fournisseurs hors Union européenne. Identifier les dix produits hors UE les plus demandés, avec leur pays d’origine et leur prix de vente, permet à KDou de cibler les produits à relocaliser auprès de fournisseurs européens pour réduire l’empreinte transport.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/P2.png" alt="Résultat de la requête P2" id="photo_P2">
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> 3. Quels sont les Boissons proposées par KDou ?</p>
+                        <p class="sql">
+                            SELECT DISTINCT<br>
+                            Produit.NomProd,<br>
+                            Categorie.NomCateg<br>
+                            FROM Categorie<br>
+                            INNER JOIN Produit ON Categorie.CodeCateg = Produit.CodeCateg<br>
+                            WHERE (((Categorie.NomCateg) = "Boissons"));
+                        </p>
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            La requête relie les tables Produit et Categorie en associant chaque produit avec sa catégorie, ensuite on fait un trie pour ne garder que les Boisssons. Le DISTINCT évite les doublons.</p>
+                        <p class="explication"><span class="span_explication">Intérêt :</span> <br>
+                            Les boissons sont la catégorie qui génère le plus de marge à KDou et elles sont liées à la santé. Cette liste donne l'inventaire de l'offre, première étape pour décider quelles boissons promouvoir, remplacer par des alternatives plus saines ou retirer du catalogue.</p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/P3.png" alt="Résultat de la requête P3" id="photo_P3">
+                    </div>
+                </div>
+
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> 4. Quels sont les produits locaux, classés par ordre décroissant de rentabilité financière ?</p>
+                        <p class="sql">
+                            SELECT Produit.NomProd, Fournisseur.Societe AS NomFournisseur, Categorie.NomCateg, (Produit.CoutAchat * Categorie.CoefMarge) AS PrixVente, (Produit.CoutAchat * Categorie.CoefMarge) - Produit.CoutAchat AS MargeNette<br/>
+                            FROM ((Produit<br/>
+                            INNER JOIN Fournisseur ON Produit.NoFour = Fournisseur.NoFour)<br/>
+                            INNER JOIN Pays ON Fournisseur.NoPays = Pays.NoPays)<br/>
+                            INNER JOIN Categorie ON Produit.CodeCateg = Categorie.CodeCateg<br/>
+                            WHERE Pays.PaysFR = 'France'<br/>
+                            ORDER BY ((Produit.CoutAchat * Categorie.CoefMarge) - Produit.CoutAchat) DESC;
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                        La requête effectue des jointures entre Produit, Fournisseur, Pays et Categorie via leurs clés primaires/étrangères. Elle filtre les résultats sur la France (WHERE). Le prix de vente est calculé selon la règle métier de KDou (coût d’achat * coefficient de marge). La marge nette est obtenue en soustrayant le coût d’achat, puis le résultat est trié par ordre décroissant (DESC).</p>
+                        <p class="explication"><span class="span_explication">Intérêt :</span> <br>
+                            KDou souhaite renforcer son image d’entreprise éco-responsable tout en améliorant sa rentabilité. Promouvoir des produits locaux limite les émissions polluantes liées au transport intercontinental. </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/P4.png" alt="Résultat de la requête P4" id="photo_P4"> <!--Il faut changer l'image-->
+                    </div>
+                </div>
+
+                <div class="requete_contenu">
+                    <div class="requete_texte">
+                        <p class="questions"> 5. Quels sont les produits qui n'ont jamais été vendu ?</p>
+                        <p class="sql">
+                            SELECT Produit.NomProd, Categorie.NomCateg, Produit.CoutAchat<br>
+                            FROM Produit INNER JOIN Categorie<br>
+                            ON Produit.CodeCateg = Categorie.CodeCateg<br>
+                            WHERE NOT EXISTS<br>
+                            (SELECT *<br>
+                            FROM DetailCommande<br>
+                            WHERE DetailCommande.[Réf produit] = Produit.RefProd)<br>
+                            ORDER BY Categorie.NomCateg, Produit.NomProd;
+                        <p class="explication"><span class="span_explication">Explication :</span> <br>
+                            La requête joins les produits et leurs catégories pour les affichées si il ne sont pas présent dans les commandes.</p>
+                        <p class="explication"><span class="span_explication">Intérêt :</span> <br>
+                           Pour Kdou un invendu est de l'argent perdu, et pour l'environnement cela représentent du gachie alimentaire. Cette requête permet de visualiser les produits a potentiellement retirer. </p>
+                        <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
+                    </div>
+                    <div class="requete_img">
+                        <img src="ASSETS/IMG/P5.png" alt="Résultat de la requête P5" id="photo_P5">
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+
+
+        <footer>
+            <div class="div_footer">
+                <h4>Groupe 107</h4>
+                <ul class="list_footer">
+                    <li>Lenoir Noah</li>
+                    <li>Bounoua Mohamed</li>
+                    <li>Aid Maria</li>
+                    <li>Simon Bethsaida</li>
+                    <li>Kefi Selim</li>
+                </ul>
+            </div>
+        </footer>
+    </body>
+</html>
