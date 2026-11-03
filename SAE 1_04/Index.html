@@ -183,7 +183,7 @@
                             OR QteParUnit LIKE '*verre*';
                         </p>
                         <p class="explication"><span class="span_explication">Explication :</span> <br>
-                            Cette requête cherche les mots « carton » et « verre » pour retrouver les produits concernés : 23 en carton et 3 en verre (aucun n'est dans les deux). Etant donné l'image que Kdou souhaitant renforcer son image éco-friendly, ce premier repérage permet de ressortir les éléments avec un emballage recyclable.</p>
+                            Cette requête cherche les mots « carton » et « verre » pour retrouver les produits concernés : 23 en carton et 3 en verre (aucun n'est dans les deux). Kdou souhaitant renforcer son image éco-friendly, ce premier repérage permet de ressortir les éléments avec un emballage recyclable.</p>
                         <p class="explication"><span class="span_explication">Erreurs :</span> <br>
                             On peut signaler que « Mascarpone Fabioli » est noté « 24 cartons (20200 g) », ce qui est probablement une faute de saisie (200 g).</p>
                         <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
@@ -271,7 +271,7 @@
                         <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
                     </div>
                     <div class="requete_img">
-                        <img src="ASSETS/IMG/Q1j.png" alt="Résultat de la requête Q1 j " id="photo_Q1j"><!--je n'ai pas la photo je la change juste après-->
+                        <img src="ASSETS/IMG/Q1j.png" alt="Résultat de la requête Q1 j " id="photo_Q1j">
                     </div>
                 </div>
 
@@ -335,7 +335,7 @@
                     <div class="requete_texte">
                         <p class="questions"> Calcul de l’indicateur nombre de produits carnés non commandés actuellement ?</p>
                         <p class="sql">
-                            SELECT COUNT([Produit].[NomProd]) AS [Nombres de produit]<br>
+                            SELECT COUNT([Produit].[NomProd]) AS [Nombres de produits]<br>
                             FROM [DetailCommande]<br>
                             RIGHT JOIN ([Categorie]<br>
                             INNER JOIN [Produit]<br>
@@ -439,7 +439,7 @@
 
                 <div class="requete_contenu">
                     <div class="requete_texte">
-                        <p class="questions"> 3. Quels sont les Boissons proposées par KDou ?</p>
+                        <p class="questions"> 3. Quels sont les boissons proposées par KDou ?</p>
                         <p class="sql">
                             SELECT DISTINCT<br>
                             Produit.NomProd,<br>
@@ -449,7 +449,7 @@
                             WHERE (((Categorie.NomCateg) = "Boissons"));
                         </p>
                         <p class="explication"><span class="span_explication">Explication :</span> <br>
-                            La requête relie les tables Produit et Categorie en associant chaque produit avec sa catégorie, ensuite on fait un trie pour ne garder que les Boisssons. Le DISTINCT évite les doublons.</p>
+                            La requête relie les tables Produit et Categorie en associant chaque produit avec sa catégorie, ensuite on filtre pour ne garder que les boisssons. Le DISTINCT évite les doublons.</p>
                         <p class="explication"><span class="span_explication">Intérêt :</span> <br>
                             Les boissons sont la catégorie qui génère le plus de marge à KDou et elles sont liées à la santé. Cette liste donne l'inventaire de l'offre, première étape pour décider quelles boissons promouvoir, remplacer par des alternatives plus saines ou retirer du catalogue.</p>
                         <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
@@ -471,6 +471,7 @@
                             INNER JOIN Categorie ON Produit.CodeCateg = Categorie.CodeCateg<br/>
                             WHERE Pays.PaysFR = 'France'<br/>
                             ORDER BY ((Produit.CoutAchat * Categorie.CoefMarge) - Produit.CoutAchat) DESC;
+                        </p>
                         <p class="explication"><span class="span_explication">Explication :</span> <br>
                         La requête effectue des jointures entre Produit, Fournisseur, Pays et Categorie via leurs clés primaires/étrangères. Elle filtre les résultats sur la France (WHERE). Le prix de vente est calculé selon la règle métier de KDou (coût d’achat * coefficient de marge). La marge nette est obtenue en soustrayant le coût d’achat, puis le résultat est trié par ordre décroissant (DESC).</p>
                         <p class="explication"><span class="span_explication">Intérêt :</span> <br>
@@ -478,7 +479,7 @@
                         <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
                     </div>
                     <div class="requete_img">
-                        <img src="ASSETS/IMG/P4.png" alt="Résultat de la requête P4" id="photo_P4"> <!--Il faut changer l'image-->
+                        <img src="ASSETS/IMG/P4.png" alt="Résultat de la requête P4" id="photo_P4">
                     </div>
                 </div>
 
@@ -495,9 +496,9 @@
                             WHERE DetailCommande.[Réf produit] = Produit.RefProd)<br>
                             ORDER BY Categorie.NomCateg, Produit.NomProd;
                         <p class="explication"><span class="span_explication">Explication :</span> <br>
-                            La requête joins les produits et leurs catégories pour les affichées si il ne sont pas présent dans les commandes.</p>
+                            La requête joint les produits à leur catégorie et n’affiche que ceux qui ne figurent dans aucune commande.</p>
                         <p class="explication"><span class="span_explication">Intérêt :</span> <br>
-                           Pour Kdou un invendu est de l'argent perdu, et pour l'environnement cela représentent du gachie alimentaire. Cette requête permet de visualiser les produits a potentiellement retirer. </p>
+                           Pour Kdou un invendu est de l'argent perdu, et pour l'environnement cela représente du gaspillage alimentaire. Cette requête permet de visualiser les produits à potentiellement retirer. </p>
                         <a href="#haut" class="retour"><strong>Retour en haut</strong></a>
                     </div>
                     <div class="requete_img">
